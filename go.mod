@@ -7,7 +7,7 @@ require (
 	github.com/gin-contrib/sessions v1.0.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/glebarez/sqlite v1.11.0
-	github.com/mitoteam/mttools v0.0.0-20241218140423-a3403a9ff8ad
+	github.com/mitoteam/mttools v1.0.0
 	github.com/spf13/cobra v1.8.1
 	gorm.io/gorm v1.25.12
 )
