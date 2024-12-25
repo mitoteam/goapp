@@ -213,7 +213,7 @@ func (app *AppBase) buildRunCmd() *cobra.Command {
 				WriteTimeout: time.Second * 10,
 				ReadTimeout:  time.Second * 20,
 				IdleTimeout:  time.Second * 60,
-				Handler:      app.webRouter.Handler(),
+				Handler:      app.Handler(),
 				BaseContext:  func(l net.Listener) context.Context { return app.BaseContext },
 			}
 

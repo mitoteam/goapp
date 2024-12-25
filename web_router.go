@@ -20,32 +20,32 @@ func (app *AppBase) buildWebRouter() {
 	sessionStore := cookie.NewStore([]byte(app.baseSettings.WebserverCookieSecret))
 
 	// Prepare router
-	app.webRouter = gin.New()
+	app.ginEngine = gin.New()
 
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
-	app.webRouter.Use(gin.Recovery())
+	app.ginEngine.Use(gin.Recovery())
 
 	// use session store
-	app.webRouter.Use(sessions.Sessions(app.ExecutableName, sessionStore))
+	app.ginEngine.Use(sessions.Sessions(app.ExecutableName, sessionStore))
 
 	//extended logging if requested
 	if app.WebRouterLogQueries {
-		app.webRouter.Use(gin.Logger())
+		app.ginEngine.Use(gin.Logger())
 		log.Println("Extended queries logging enabled.")
 	}
 
 	//API routes
 	if app.WebApiPathPrefix != "" {
-		app.webRouter.POST("/api/*any", (app).webApiRequestGinHandler)
+		app.ginEngine.POST("/api/*any", (app).webApiRequestGinHandler)
 
 		if app.WebApiEnableGet {
-			app.webRouter.GET("/api/*any", (app).webApiRequestGinHandler)
+			app.ginEngine.GET("/api/*any", (app).webApiRequestGinHandler)
 		}
 	}
 
 	// user provided routes
 	if app.BuildWebRouterF != nil {
-		app.BuildWebRouterF(app.webRouter)
+		app.BuildWebRouterF(app.ginEngine)
 	}
 }
 

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"reflect"
 	"runtime"
 	"strconv"
@@ -51,7 +52,7 @@ type AppBase struct {
 	ShutdownTimeout time.Duration
 
 	//web router
-	webRouter           *gin.Engine
+	ginEngine           *gin.Engine
 	WebRouterLogQueries bool                // true = extended query logging (--query-log option of `run`)
 	BuildWebRouterF     func(r *gin.Engine) // function to build web router for `run` command
 
@@ -129,6 +130,10 @@ func NewAppBase(defaultSettings interface{}) *AppBase {
 	app.buildRootCmd()
 
 	return &app
+}
+
+func (app *AppBase) Handler() http.Handler {
+	return app.ginEngine.Handler()
 }
 
 func (app *AppBase) Run() {
