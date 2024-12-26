@@ -51,10 +51,11 @@ type AppBase struct {
 	BaseContext     context.Context
 	ShutdownTimeout time.Duration
 
-	//web router
+	//web routers
 	ginEngine           *gin.Engine
 	WebRouterLogQueries bool                // true = extended query logging (--query-log option of `run`)
 	BuildWebRouterF     func(r *gin.Engine) // function to build web router for `run` command
+	handler             http.Handler
 
 	//web api
 	WebApiPathPrefix  string // usually "/api". Leave empty to disable web API at all.
@@ -133,7 +134,16 @@ func NewAppBase(defaultSettings interface{}) *AppBase {
 }
 
 func (app *AppBase) Handler() http.Handler {
-	return app.ginEngine.Handler()
+	if app.handler == nil {
+		//default
+		return app.ginEngine.Handler()
+	} else {
+		return app.handler
+	}
+}
+
+func (app *AppBase) SetHandler(h http.Handler) {
+	app.handler = h
 }
 
 func (app *AppBase) Run() {
