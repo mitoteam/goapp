@@ -54,6 +54,7 @@ func (db_schema *dbSchemaType) Open() error {
 
 	db_schema.db, err = gorm.Open(sqlite.Open(dbFileName), &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Warn),
+		//Logger: logger.Default.LogMode(logger.Info),
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
 		},

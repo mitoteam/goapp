@@ -202,6 +202,13 @@ func CountOL[ModelT any]() (cnt int64) {
 	return cnt
 }
 
+// Just a simple wrapper
+func Transaction(trxF func() error) {
+	DbSchema.Db().Transaction(func(tx *gorm.DB) error {
+		return trxF()
+	})
+}
+
 // Checks if t is type of registered model struct
 func checkSchemaModelType(t reflect.Type) bool {
 	if DbSchema.Db() == nil {
