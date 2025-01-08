@@ -7,6 +7,7 @@ import (
 	"github.com/glebarez/sqlite"
 	"github.com/mitoteam/mttools"
 	gorm "gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
@@ -49,16 +50,21 @@ func (schema *dbSchemaType) Db() *gorm.DB {
 	return schema.db
 }
 
-func (db_schema *dbSchemaType) Open() error {
+func (db_schema *dbSchemaType) Open(logSql bool) error {
 	var err error
 
-	db_schema.db, err = gorm.Open(sqlite.Open(dbFileName), &gorm.Config{
+	config := &gorm.Config{
 		//Logger: logger.Default.LogMode(logger.Warn),
-		//Logger: logger.Default.LogMode(logger.Info),
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
 		},
-	})
+	}
+
+	if logSql {
+		config.Logger = logger.Default.LogMode(logger.Info)
+	}
+
+	db_schema.db, err = gorm.Open(sqlite.Open(dbFileName), config)
 
 	if err != nil {
 		return err

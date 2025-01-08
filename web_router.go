@@ -29,7 +29,7 @@ func (app *AppBase) buildWebRouter() {
 	app.ginEngine.Use(sessions.Sessions(app.ExecutableName, sessionStore))
 
 	//extended logging if requested
-	if app.WebRouterLogQueries {
+	if app.WebRouterLogRequests {
 		app.ginEngine.Use(gin.Logger())
 		log.Println("Extended queries logging enabled.")
 	}

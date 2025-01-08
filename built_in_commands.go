@@ -278,10 +278,18 @@ func (app *AppBase) buildRunCmd() *cobra.Command {
 
 	//Extended query log
 	cmd.PersistentFlags().BoolVar(
-		&app.WebRouterLogQueries,
-		"query-log",
+		&app.WebRouterLogRequests,
+		"log-requests",
 		false,
 		"Extended web router queries logging.",
+	)
+
+	// log SQL queries
+	cmd.PersistentFlags().BoolVar(
+		&app.baseSettings.LogSql,
+		"log-sql",
+		app.baseSettings.LogSql,
+		"Log SQL queries.",
 	)
 
 	return cmd

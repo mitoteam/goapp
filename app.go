@@ -52,10 +52,10 @@ type AppBase struct {
 	ShutdownTimeout time.Duration
 
 	//web routers
-	ginEngine           *gin.Engine
-	WebRouterLogQueries bool                // true = extended query logging (--query-log option of `run`)
-	BuildWebRouterF     func(r *gin.Engine) // function to build web router for `run` command
-	handler             http.Handler
+	ginEngine            *gin.Engine
+	WebRouterLogRequests bool                // true = extended web request logging (--log-request option of `run`)
+	BuildWebRouterF      func(r *gin.Engine) // function to build web router for `run` command
+	handler              http.Handler
 
 	//web api
 	WebApiPathPrefix  string // usually "/api". Leave empty to disable web API at all.

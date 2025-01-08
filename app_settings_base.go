@@ -14,6 +14,8 @@ type AppSettingsBase struct {
 	ServiceGroup string `yaml:"service_group" yaml_comment:"Group for 'install' command"`
 
 	InitialRootPassword string `yaml:"initial_root_password" yaml_comment:"Password to authenticate root user before users database ready. !!!DELETE THIS when you set root password in GUI."`
+
+	LogSql bool `yaml:"log_sql" yaml_comment:"Log SQL queries."`
 }
 
 func (s *AppSettingsBase) checkDefaultValues(defaults *AppSettingsBase) {
