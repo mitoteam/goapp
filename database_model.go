@@ -10,9 +10,15 @@ import (
 	gorm "gorm.io/gorm"
 )
 
-// gorm.Model alternative without DeletedAt column (to disable Soft Delete)
+// base model type all model types should embed
+type DbModel struct {
+}
+
+// gorm.Model alternative without DeletedAt column (to disable Soft Delete feature)
 // see https://gorm.io/docs/delete.html#Soft-Delete
 type BaseModel struct {
+	DbModel
+
 	ID        int64 `gorm:"primarykey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
