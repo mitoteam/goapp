@@ -1,4 +1,15 @@
 # goapp - MiTo Team's Golang projects application base
+
+[![Reference](https://pkg.go.dev/badge/github.com/mitoteam/goapp.svg)](https://pkg.go.dev/github.com/mitoteam/goapp)
+![GitHub code size](https://img.shields.io/github/languages/code-size/mitoteam/goapp)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mitoteam/goapp)](https://goreportcard.com/report/github.com/mitoteam/goapp)
+![GitHub](https://img.shields.io/github/license/mitoteam/goapp)
+
+
+[![GitHub Version](https://img.shields.io/github/v/release/mitoteam/goapp?logo=github)](https://github.com/mitoteam/goapp)
+[![GitHub Release](https://img.shields.io/github/release-date/mitoteam/goapp)](https://github.com/mitoteam/goapp/releases)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/mitoteam/goapp)](https://github.com/mitoteam/dhtml/commits)
+
 Go projects application base
 
 ## Add as git submodule
