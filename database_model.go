@@ -19,7 +19,7 @@ type DbModel struct {
 type BaseModel struct {
 	DbModel
 
-	ID        int64 `gorm:"primarykey"`
+	ID        int64 `gorm:"primaryKey;not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
