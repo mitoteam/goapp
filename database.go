@@ -2,7 +2,9 @@ package goapp
 
 import (
 	"log"
+	"os"
 	"reflect"
+	"time"
 
 	"github.com/glebarez/sqlite"
 	"github.com/mitoteam/mttools"
@@ -60,9 +62,17 @@ func (db_schema *dbSchemaType) Open(logSql bool) error {
 		},
 	}
 
+	gormLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags), logger.Config{
+		SlowThreshold:             500 * time.Millisecond,
+		IgnoreRecordNotFoundError: true,
+		Colorful:                  true,
+	})
+
 	if logSql {
-		config.Logger = logger.Default.LogMode(logger.Info)
+		gormLogger.LogMode(logger.Info)
 	}
+
+	config.Logger = gormLogger
 
 	db_schema.db, err = gorm.Open(sqlite.Open(dbFileName), config)
 
