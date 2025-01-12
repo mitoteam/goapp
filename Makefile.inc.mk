@@ -2,6 +2,7 @@
 # EXECUTABLE_NAME := exec_name
 # SUBMODULES := ./internal/dhtml
 # ARCH_FILES := ./VERSION ./LICENSE.md # files to add to archives
+# SKIP_EXECUTABLE_REMOVAL := 1 # do not delete executable files after packing them to 7z
 #
 # include internal/goapp/Makefile.inc.mk
 # ----------------------------
@@ -10,22 +11,22 @@
 # SET DEFAULT VALUES
 # name of executable file without extension
 ifeq (${EXECUTABLE_NAME},)
-EXECUTABLE_NAME := executable_name_not_set
+  EXECUTABLE_NAME := executable_name_not_set
 endif
 
 # app name
 ifeq (${APP_NAME},)
-APP_NAME := ${EXECUTABLE_NAME}
+  APP_NAME := ${EXECUTABLE_NAME}
 endif
 
 # directory to create distribution archives
 ifeq (${DIST_DIR},)
-DIST_DIR := dist
+  DIST_DIR := dist
 endif
 
 # internal submodules base path
 ifeq (${INTERNAL_SUBMODULES_PATH},)
-INTERNAL_SUBMODULES_PATH := ./internal
+  INTERNAL_SUBMODULES_PATH := ./internal
 endif
 
 # submodules to run tests for
@@ -47,6 +48,7 @@ APP_COMMIT := $(shell git rev-list -1 HEAD)
 LD_FLAGS := "-w -s -X 'github.com/mitoteam/goapp.BuildVersion=${APP_VERSION}' -X 'github.com/mitoteam/goapp.BuildCommit=${APP_COMMIT}' -X 'github.com/mitoteam/goapp.BuildTime=${BUILD_TIME}'"
 
 
+# all platforms build
 .PHONY: build-all
 build-all:: before-build dist-linux64 dist-linux32 dist-windows64 dist-windows32 after-build
 
@@ -93,8 +95,10 @@ before-build:: clean tests ${DIST_DIR}
 
 .PHONY: after-build
 after-build::
-	rm -f ${DIST_DIR}/${EXECUTABLE_NAME}
-	rm -f ${DIST_DIR}/${EXECUTABLE_NAME}.exe
+  ifeq (${SKIP_EXECUTABLE_REMOVAL},)
+	  rm -f ${DIST_DIR}/${EXECUTABLE_NAME}
+	  rm -f ${DIST_DIR}/${EXECUTABLE_NAME}.exe
+  endif
 	sha256sum ${DIST_DIR}/*.7z > ${DIST_DIR}/checksums.sha256
 
 
