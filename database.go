@@ -83,11 +83,9 @@ func (db_schema *dbSchemaType) Open(logSql bool) error {
 	log.Printf("Database %s opened\n", dbFileName)
 
 	// Migrate the schema
-	//log.Printf("DBG: %+v\n", db_schema.modelMap)
 	for name, modelObject := range db_schema.modelMap {
-		//log.Printf("DBG: %s %+v\n", name, modelObject)
 		if err := db_schema.db.AutoMigrate(modelObject); err != nil {
-			log.Printf("ERROR migrating %s: %s", name, err.Error())
+			log.Panicf("ERROR migrating %s: %s\n", name, err.Error())
 		}
 	}
 
