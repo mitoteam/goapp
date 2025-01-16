@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (app *AppBase) buildWebRouter() {
+func (app *AppBase) buildGinWebRouter() http.Handler {
 	//no debug logging
 	gin.SetMode(gin.ReleaseMode)
 
@@ -47,6 +47,8 @@ func (app *AppBase) buildWebRouter() {
 	if app.BuildWebRouterF != nil {
 		app.BuildWebRouterF(app.ginEngine)
 	}
+
+	return app.ginEngine.Handler()
 }
 
 func (app *AppBase) webApiRequestGinHandler(c *gin.Context) {

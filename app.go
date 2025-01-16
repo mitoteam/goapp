@@ -135,11 +135,11 @@ func NewAppBase(defaultSettings interface{}) *AppBase {
 
 func (app *AppBase) Handler() http.Handler {
 	if app.webHandler == nil {
-		//default
-		return app.ginEngine.Handler()
-	} else {
-		return app.webHandler
+		//use default gin router if non was set
+		app.webHandler = app.buildGinWebRouter()
 	}
+
+	return app.webHandler
 }
 
 func (app *AppBase) SetHandler(h http.Handler) {

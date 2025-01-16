@@ -251,8 +251,6 @@ func (app *AppBase) buildRunCmd() *cobra.Command {
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			log.Printf("%s version: %s\n", app.AppName, app.Version)
 
-			app.buildWebRouter()
-
 			var err error
 
 			if app.PreRunF != nil {
