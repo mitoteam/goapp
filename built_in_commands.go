@@ -234,13 +234,16 @@ func (app *AppBase) buildRunCmd() *cobra.Command {
 			// Block execution until we receive our signal.
 			<-cancel_channel
 
+			// Notify application we are shutting down (via context.WithCancel())
+			app.appShutdownF()
+
 			log.Println("Shutting down web server")
 
 			// Create a deadline to wait for (10s).
-			ctx, cancel := context.WithTimeout(app.BaseContext, app.ShutdownTimeout)
+			shutdownCtx, cancel := context.WithTimeout(app.BaseContext, app.ShutdownTimeout)
 			defer cancel()
 
-			if err := httpSrv.Shutdown(ctx); err != nil {
+			if err := httpSrv.Shutdown(shutdownCtx); err != nil {
 				log.Fatal("Server forced to shutdown:", err)
 			}
 

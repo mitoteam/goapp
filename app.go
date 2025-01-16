@@ -47,8 +47,11 @@ type AppBase struct {
 
 	rootCmd *cobra.Command
 
-	//contexts and timeout settings
-	BaseContext     context.Context
+	//base app context to be used
+	BaseContext context.Context
+	//called when application is being shutdown (set by context.WithCancel)
+	appShutdownF context.CancelFunc
+	//timeout for webserver shutdown
 	ShutdownTimeout time.Duration
 
 	//web routers
@@ -112,7 +115,7 @@ func NewAppBase(defaultSettings interface{}) *AppBase {
 	})
 
 	//global application base context
-	app.BaseContext = context.Background()
+	app.BaseContext, app.appShutdownF = context.WithCancel(context.Background())
 
 	//compilation data
 	app.Version = BuildVersion
