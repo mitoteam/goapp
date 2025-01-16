@@ -18,6 +18,7 @@ import (
 )
 
 const DEV_MODE_LABEL = "DEV"
+const MOTTO = "Making world better since 2005"
 
 // Variables to be set by compiler
 var (
