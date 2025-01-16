@@ -55,7 +55,7 @@ type AppBase struct {
 	ginEngine            *gin.Engine
 	WebRouterLogRequests bool                // true = extended web request logging (--log-request option of `run`)
 	BuildWebRouterF      func(r *gin.Engine) // function to build web router for `run` command
-	handler              http.Handler
+	webHandler           http.Handler
 
 	//web api
 	WebApiPathPrefix  string // usually "/api". Leave empty to disable web API at all.
@@ -134,16 +134,16 @@ func NewAppBase(defaultSettings interface{}) *AppBase {
 }
 
 func (app *AppBase) Handler() http.Handler {
-	if app.handler == nil {
+	if app.webHandler == nil {
 		//default
 		return app.ginEngine.Handler()
 	} else {
-		return app.handler
+		return app.webHandler
 	}
 }
 
 func (app *AppBase) SetHandler(h http.Handler) {
-	app.handler = h
+	app.webHandler = h
 }
 
 func (app *AppBase) Run() {
