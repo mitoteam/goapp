@@ -1,6 +1,8 @@
 package goapp
 
 type AppSettingsBase struct {
+	LoadedFromFile bool `yaml:"-"` //ignored in yaml
+
 	Production bool `yaml:"production" yaml_comment:"Production mode"`
 
 	BaseUrl string `yaml:"base_url" yaml_comment:"Base external site URL (with protocol and port, no trailing slash)"`

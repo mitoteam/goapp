@@ -212,6 +212,7 @@ func (app *AppBase) loadSettings() error {
 	}
 
 	// Settings post-processing
+	app.baseSettings.LoadedFromFile = true
 
 	if app.baseSettings.Production {
 		// require some settings in PRODUCTION

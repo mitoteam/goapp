@@ -36,7 +36,9 @@ func (app *AppBase) buildRootCmd() {
 				}
 			} else {
 				//do not require settings loading just for certain commands
-				if cmd.Name() != "init" && cmd.Name() != "version" {
+				no_settings_required_cmd_list := []string{"init", "version", "info", "help"}
+
+				if !mttools.InSlice(cmd.Name(), no_settings_required_cmd_list) {
 					log.Fatalf(
 						"No "+app.AppSettingsFilename+" file found. Please create one or use `%s init` command.\n", app.ExecutableName,
 					)
@@ -187,7 +189,11 @@ func (app *AppBase) buildInfoCmd() *cobra.Command {
 			fmt.Print("\n================================\n")
 			fmt.Print("SETTINGS\n")
 			fmt.Print("================================\n")
-			app.printSettings()
+			if app.baseSettings.LoadedFromFile {
+				app.printSettings()
+			} else {
+				fmt.Printf("File %s not found.\n", app.AppSettingsFilename)
+			}
 
 			if app.PrintInfoF != nil {
 				app.PrintInfoF()
