@@ -91,6 +91,7 @@ dist-linux64:
 
 .PHONY: before-build
 before-build:: clean tests ${DIST_DIR}
+	@go version
 
 
 .PHONY: after-build
