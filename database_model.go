@@ -165,6 +165,24 @@ func SaveObject(modelObject any) bool {
 	return true
 }
 
+// Saves object. Returns err if something goes wrong or nil on success.
+func SaveObjectE(modelObject any) error {
+	var t reflect.Type
+
+	if t, modelObject = modelObjectReflection(modelObject); t == nil {
+		// not a schema model object
+		return nil
+	}
+
+	if err := DbSchema.Db().Save(modelObject).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // Inserts new record for object. Used for objects without ID to force creation.
 // Normal objects should use SaveObject() for both inserting and updating.
 // Returns false if something goes wrong.
