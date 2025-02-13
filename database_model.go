@@ -145,7 +145,7 @@ func DeleteObject(modelObject any) error {
 	return nil
 }
 
-// Saves object. Returns false if something goes wrong.
+// Saves object. Returns false and adds message to log if something goes wrong.
 func SaveObject(modelObject any) bool {
 	var t reflect.Type
 
