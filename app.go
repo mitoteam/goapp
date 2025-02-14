@@ -32,11 +32,12 @@ type AppBase struct {
 	AppName         string //Long name
 	LongDescription string //Long description
 
-	Version         string //Version (auto set by compiler)
-	BuildCommitFull string //Git full commit hash
-	BuildCommit     string //Git short commit hash
-	BuildTime       string //Build time
-	BuildWith       string //Build information
+	Version         string    //Version (auto set by compiler)
+	BuildCommitFull string    //Git full commit hash
+	BuildCommit     string    //Git short commit hash
+	BuildTime       string    //Build time
+	BuildWith       string    //Build information
+	StartTime       time.Time //Startup timestamp
 
 	Global map[string]interface{} //some global application state values
 
@@ -82,6 +83,9 @@ type AppBase struct {
 // settings - application settings default values. Pointer to struct that embeds AppSettingsBase.
 func NewAppBase(defaultSettings interface{}) *AppBase {
 	app := AppBase{}
+
+	//startup time
+	app.StartTime = time.Now()
 
 	//global app state values
 	app.Global = make(map[string]interface{})
@@ -260,4 +264,8 @@ func (app *AppBase) ApiHandler(path string, handler ApiRequestHandler) *AppBase 
 
 func (app *AppBase) IsDevMode() bool {
 	return app.Version == DEV_MODE_LABEL // && false //uncomment to debug production mode
+}
+
+func (app *AppBase) Uptime() time.Duration {
+	return time.Since(app.StartTime)
 }
