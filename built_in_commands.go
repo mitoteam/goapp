@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/mitoteam/mttools"
@@ -77,10 +78,24 @@ func (app *AppBase) buildVersionCmd() *cobra.Command {
 	}
 }
 
+func (app *AppBase) buildLicenseCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "license",
+		Short: "Prints license information for " + app.AppName + ".",
+
+		Run: func(cmd *cobra.Command, args []string) {
+			title := app.AppName + " license information"
+
+			fmt.Println(title + "\n" + strings.Repeat("-", len(title)) + "\n")
+			fmt.Println(app.License)
+		},
+	}
+}
+
 func (app *AppBase) buildInstallCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "install",
-		Short: "Creates system service to run " + app.AppName,
+		Short: "Creates system service to run " + app.AppName + ".",
 
 		Run: func(cmd *cobra.Command, args []string) {
 			if mttools.IsSystemdAvailable() {
@@ -116,7 +131,7 @@ func (app *AppBase) buildInstallCmd() *cobra.Command {
 func (app *AppBase) buildUninstallCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "uninstall",
-		Short: "Remove installed system service " + app.AppName,
+		Short: "Removes installed system service " + app.AppName + ".",
 
 		Run: func(cmd *cobra.Command, args []string) {
 			if mttools.IsSystemdAvailable() {
@@ -207,7 +222,7 @@ func (app *AppBase) buildInfoCmd() *cobra.Command {
 func (app *AppBase) buildRunCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "run",
-		Short: "Runs webserver",
+		Short: "Runs webserver.",
 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			address := app.baseSettings.WebserverHostname +

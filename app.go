@@ -39,6 +39,8 @@ type AppBase struct {
 	BuildWith       string    //Build information
 	StartTime       time.Time //Startup timestamp
 
+	License string //License information to print with `license` command
+
 	Global map[string]interface{} //some global application state values
 
 	AppSettingsFilename string           // with .yml extension please
@@ -200,6 +202,10 @@ func (app *AppBase) internalInit() {
 		app.buildInfoCmd(),
 		app.buildRunCmd(),
 	)
+
+	if app.License != "" {
+		app.rootCmd.AddCommand(app.buildLicenseCmd())
+	}
 
 	if app.BuildCustomCommandsF != nil {
 		app.BuildCustomCommandsF(app.rootCmd)
