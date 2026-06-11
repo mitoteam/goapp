@@ -13,7 +13,7 @@ jobs:
     - name: Set environment variables
       run: echo "TERM=linux" >> "$GITHUB_ENV"
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Set and show version number
       run: |
@@ -22,7 +22,7 @@ jobs:
         echo "Release of v$VERSION" >> $GITHUB_STEP_SUMMARY
 
     - name: Set up Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
         go-version: '^1.24'
         check-latest: true
@@ -35,7 +35,7 @@ jobs:
 
     - name: Create GitHub Release
       id: release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v3
       with:
         draft: false
         tag_name: "v${{ env.MT_VERSION }}"
