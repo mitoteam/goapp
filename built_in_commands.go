@@ -37,7 +37,7 @@ func (app *AppBase) buildRootCmd() {
 				}
 			} else {
 				//do not require settings loading just for certain commands
-				no_settings_required_cmd_list := []string{"init", "version", "info", "help"}
+				no_settings_required_cmd_list := []string{"init", "version", "info", "help", "license"}
 
 				if !mttools.InSlice(cmd.Name(), no_settings_required_cmd_list) {
 					log.Fatalf(
