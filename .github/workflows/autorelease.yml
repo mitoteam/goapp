@@ -9,11 +9,13 @@ on:
 jobs:
   BuildAndRelease:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Set environment variables
       run: echo "TERM=linux" >> "$GITHUB_ENV"
 
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Set and show version number
       run: |
@@ -22,9 +24,9 @@ jobs:
         echo "Release of v$VERSION" >> $GITHUB_STEP_SUMMARY
 
     - name: Set up Go
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v7
       with:
-        go-version: '^1.24'
+        go-version: '^1.27'
         check-latest: true
 
     - name: Make sure it compiles
