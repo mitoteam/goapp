@@ -48,7 +48,7 @@ APP_COMMIT := $(shell git rev-list -1 HEAD)
 LD_FLAGS := "-w -s -X 'github.com/mitoteam/goapp.BuildVersion=${APP_VERSION}' -X 'github.com/mitoteam/goapp.BuildCommit=${APP_COMMIT}' -X 'github.com/mitoteam/goapp.BuildTime=${BUILD_TIME}'"
 
 
-# all platforms build
+# DEAFULT TARGET (as it is first one) all platforms build
 .PHONY: build-all
 build-all:: before-build dist-linux64 dist-linux32 dist-windows64 dist-windows32 after-build
 
