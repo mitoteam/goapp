@@ -34,9 +34,9 @@ func (schema *dbSchemaType) AddModel(modelType reflect.Type) {
 		log.Panicf("modelType %s is not a struct", modelType.String())
 	}
 
-	//ensure it embeds BaseModel
-	if !mttools.IsStructTypeEmbeds(modelType, reflect.TypeFor[BaseModel]()) {
-		log.Panicf("modelType %s does not embed BaseModel", modelType.String())
+	//ensure it embeds EmptyBaseModel (or BaseModel in most cases)
+	if !mttools.IsStructTypeEmbeds(modelType, reflect.TypeFor[EmptyBaseModel]()) {
+		log.Panicf("modelType %s does not embed EmptyBaseModel or BaseModel", modelType.String())
 	}
 
 	//crate empty model object
