@@ -75,6 +75,7 @@ func (db_schema *dbSchemaType) Open(logSql bool) error {
 	config.Logger = gormLogger
 
 	db_schema.db, err = gorm.Open(sqlite.Open(dbFileName), config)
+	db_schema.db.Exec("PRAGMA foreign_keys = ON;") //enable FK checks
 
 	if err != nil {
 		return err
