@@ -122,8 +122,9 @@ version:
 	@echo "'${APP_NAME}' version from 'VERSION' file: '${APP_VERSION}'"
 
 
+# removes dist dir
 .PHONY: clean
-clean:
+clean::
 	rm -rf ${DIST_DIR}
 
 .PHONY: deps
