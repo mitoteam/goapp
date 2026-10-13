@@ -50,44 +50,59 @@ APP_COMMIT := $(shell git rev-list -1 HEAD)
 # see https://stackoverflow.com/a/22276273/380123 for -w -s
 LD_FLAGS := "-w -s -X 'github.com/mitoteam/goapp.BuildVersion=${APP_VERSION}' -X 'github.com/mitoteam/goapp.BuildCommit=${APP_COMMIT}' -X 'github.com/mitoteam/goapp.BuildTime=${BUILD_TIME}'"
 
-
+# Builds dists for all platforms
 .PHONY: build-all
 build-all:: before-build dist-linux64 dist-linux32 dist-windows64 dist-windows32 after-build
+
+# Build binaries for all platforms (used in Github Actions to check buildability)
+bin-all: before-build bin-linux64 bin-linux32 bin-windows64 bin-windows32
 
 
 .PHONY: build-windows32
 build-windows32: before-build dist-windows32 after-build
 
-.PHONY: dist-windows32
-dist-windows32:
+.PHONY: bin-windows32
+bin-windows32: before-build
 	GOOS=windows GOARCH=386 go build -o ${DIST_DIR}/${EXECUTABLE_NAME}.exe -ldflags=${LD_FLAGS} main.go
+
+.PHONY: dist-windows32
+dist-windows32: bin-windows32
 	7z a ${DIST_DIR}/${APP_NAME}-${APP_VERSION}-win32.7z -mx9 ./${DIST_DIR}/${EXECUTABLE_NAME}.exe ${ARCH_FILES}
 
 
 .PHONY: build-windows64
 build-windows64: before-build dist-windows64 after-build
 
-.PHONY: dist-windows64
-dist-windows64:
+.PHONY: bin-windows64
+bin-windows64: before-build
 	GOOS=windows GOARCH=amd64 go build -o ${DIST_DIR}/${EXECUTABLE_NAME}.exe -ldflags=${LD_FLAGS} main.go
+
+.PHONY: dist-windows64
+dist-windows64: bin-windows64
 	7z a ${DIST_DIR}/${APP_NAME}-${APP_VERSION}-win64.7z -mx9 ./${DIST_DIR}/${EXECUTABLE_NAME}.exe ${ARCH_FILES}
 
 
 .PHONY: build-linux32
 build-linux32: before-build dist-linux32 after-build
 
-.PHONY: dist-linux32
-dist-linux32:
+.PHONY: bin-linux32
+bin-linux32: before-build
 	GOOS=linux GOARCH=386 go build -o ${DIST_DIR}/${EXECUTABLE_NAME} -ldflags=${LD_FLAGS} main.go
+
+.PHONY: dist-linux32
+dist-linux32: bin-linux32
 	7z a ${DIST_DIR}/${APP_NAME}-${APP_VERSION}-linux32.7z -mx9 ./${DIST_DIR}/${EXECUTABLE_NAME} ${ARCH_FILES}
 
 
 .PHONY: build-linux64
 build-linux64: before-build dist-linux64 after-build
 
-.PHONY: dist-linux64
-dist-linux64:
+.PHONY: bin-linux64
+bin-linux64: before-build
 	GOOS=linux GOARCH=amd64 go build -o ${DIST_DIR}/${EXECUTABLE_NAME} -ldflags=${LD_FLAGS} main.go
+
+.PHONY: dist-linux64
+dist-linux64: bin-linux64
 	7z a ${DIST_DIR}/${APP_NAME}-${APP_VERSION}-linux64.7z -mx9 ./${DIST_DIR}/${EXECUTABLE_NAME} ${ARCH_FILES}
 
 
