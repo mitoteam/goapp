@@ -7,6 +7,9 @@
 # include internal/goapp/Makefile.inc.mk
 # ----------------------------
 
+# implicitly set default target
+.DEFAULT_GOAL := build-all
+
 
 # SET DEFAULT VALUES
 # name of executable file without extension
@@ -32,9 +35,6 @@ endif
 # submodules to run tests for
 SUBMODULES := ${INTERNAL_SUBMODULES_PATH}/goapp ${SUBMODULES}
 
-#set default target
-.DEFAULT_GOAL := build-all
-
 
 ifeq (${OS},Windows_NT)
 	BUILD_TIME := $(shell powershell "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'")
@@ -48,7 +48,6 @@ APP_COMMIT := $(shell git rev-list -1 HEAD)
 LD_FLAGS := "-w -s -X 'github.com/mitoteam/goapp.BuildVersion=${APP_VERSION}' -X 'github.com/mitoteam/goapp.BuildCommit=${APP_COMMIT}' -X 'github.com/mitoteam/goapp.BuildTime=${BUILD_TIME}'"
 
 
-# DEAFULT TARGET (as it is first one) all platforms build
 .PHONY: build-all
 build-all:: before-build dist-linux64 dist-linux32 dist-windows64 dist-windows32 after-build
 
