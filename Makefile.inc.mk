@@ -35,12 +35,15 @@ endif
 # submodules to run tests for
 SUBMODULES := ${INTERNAL_SUBMODULES_PATH}/goapp ${SUBMODULES}
 
-
+# OS dependent things
 ifeq (${OS},Windows_NT)
 	BUILD_TIME := $(shell powershell "Get-Date -Format 'yyyy-MM-dd HH:mm:ss'")
+	CLEAR_CONSOLE_CMD := cmd /c cls
 else
 	BUILD_TIME := $(shell date +"%Y-%m-%d %H:%M:%S")
+    CLEAR_CONSOLE_CMD := clear
 endif
+
 
 APP_VERSION := $(file < VERSION)
 APP_COMMIT := $(shell git rev-list -1 HEAD)
@@ -104,8 +107,7 @@ after-build::
 
 # Run all tests in root module and in known submodules
 .PHONY: tests
-tests::
-	clear
+tests:: clear
 	go test ./... $(SUBMODULES)
 
 # target alias: test = tests
@@ -121,10 +123,17 @@ version:
 	@echo "'${APP_NAME}' version from 'VERSION' file: '${APP_VERSION}'"
 
 
+# clear console
+.PHONY: clear
+clear:
+	${CLEAR_CONSOLE_CMD}
+
+
 # removes dist dir
 .PHONY: clean
 clean::
 	rm -rf ${DIST_DIR}
+
 
 .PHONY: deps
 deps:
